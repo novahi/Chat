@@ -1,2 +1,3 @@
-# chat
-Clone chat socket.io
+yarn add express socket.io
+
+yarn add nodemon --dev
