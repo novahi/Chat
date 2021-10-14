@@ -11,12 +11,12 @@ app.get('/', (req, res) => {
 })
 
 io.on('connection', (socket) => {
-   console.log('user connected')
+   console.log('có thằng login o.O')
    socket.on('on-chat', data => {
       io.emit('user-chat', data)
    })
 })
 
 server.listen(5000, () => {
-   console.log('localhost:3000')
+   console.log('ok rồi em vào connect vào port 5k đê')
 })
