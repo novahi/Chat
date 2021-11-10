@@ -3,6 +3,7 @@ const app = express();
 const { Server } = require('socket.io');
 const http = require('http');
 const server = http.createServer(app);
+const port = process.env.PORT || 3000
 
 const io = new Server(server)
 
@@ -17,6 +18,6 @@ io.on('connection', (socket) => {
    })
 })
 
-server.listen(5000, () => {
+server.listen(port, () => {
    console.log('ok rồi em vào connect vào port 5k đê')
 })
