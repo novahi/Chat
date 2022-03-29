@@ -1,0 +1,30 @@
+.box-chat {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%
+}
+.box-message {
+  overflow: hidden;
+  
+}
+.box {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  width: 100%
+}
+.personal {
+  align-self: flex-end;
+}
+.others {
+  align-self: flex-start;
+}
+
+.message + .message {
+  margin: .5rem 0;
+}
+.bg-pink {
+  opacity: 1;
+  background-color: pink
+}

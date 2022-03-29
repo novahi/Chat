@@ -1,23 +1,37 @@
 const express = require('express');
 const app = express();
-const { Server } = require('socket.io');
-const http = require('http');
-const server = http.createServer(app);
-const port = process.env.PORT || 3000
+const path = require("path")
+const { engine } = require("express-handlebars")
+const { createServer } = require('http');
+const server = createServer(app);
+const PORT = process.env.PORT || 3000
+const { WebSocketServer } = require("ws")
+const wss = new WebSocketServer({ server })
 
-const io = new Server(server)
+app.set("view engine", "handlebars")
+app.set("views", path.join(__dirname, "views"))
+app.use(express.static(path.join(__dirname, "public")))
+app.engine("hbs", engine({
+  extname: ".hbs"
+}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
-   res.sendFile(__dirname + '/index.html');
+  let data = {
+    ip: req.headers["x-forwarded-for"].split(",")[0],
+    agent: req.headers["user-agent"]
+  }
+  res.status(200).render("chat", data.toObject())
 })
 
-io.on('connection', (socket) => {
-   console.log('có thằng login o.O')
-   socket.on('on-chat', data => {
-      io.emit('user-chat', data)
-   })
+wss.on("connection", ws => {
+  console.log("user connected")
+  ws.on("message",  (message, isBinary) => {
+    ws.send(message)
+  })
 })
 
-server.listen(port, () => {
-   console.log('ok rồi em vào connect vào port 5k đê')
+server.listen(PORT, () => {
+  console.log(`app listening on: http://localhost:${PORT}`)
 })
