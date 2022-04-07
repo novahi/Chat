@@ -1,1 +1,42 @@
-const $=document.querySelector.bind(document);let id=localStorage.getItem("id");if(!id){const e=prompt("What your name ?");id=setid(e)}let output=$("#output");const ws=new WebSocket(`wss://${window.location.host}`);async function covertData(e){let t=await e.data;return t=await t.text()}function newMessage(e,t){let n=document.createElement("div");n.innerText=e.message,n.className=`message badge rounded  fs-6 ${t==e.id?"bg-primary personal":"bg- others"}`,output.appendChild(n),output.scrollBy(0,window.innerHeight)}function setid(e){let t=e.toUpperCase()+(Math.random()+1).toString(36).substring(2);return localStorage.setItem("id",t),t}$("#form").addEventListener("submit",e=>{e.stopPropagation(),e.preventDefault();let t=$("#message");if(""==!t.value.trim()||null==!t.value.trim()){let e=JSON.stringify({id:id,name:name,message:t.value.trim()});ws.send(e)}else console.log("error");t.value=null}),ws.addEventListener("message",async e=>{try{const t=await covertData(event);console.log(t);const n=JSON.parse(t);console.log(n),newMessage(n,id)}catch(e){console.log(e)}}),ws.addEventListener("close",e=>{localStorage.removeItem("id")});
+(($, ws) => {
+  const tools = new QI();
+  let ID = localStorage.getItem("id")
+  let name = localStorage.getItem("name")
+  if(!ID) {
+    name = prompt("Tên bạn là gì ?")
+    ID = tools.setIdAndName(name)
+    name = localStorage.getItem("name")
+  }
+  const message = $("#mes")
+  ws.addEventListener("open", (e) => {
+    console.log("connected with WebSocket")
+    $("#btn").addEventListener("click", async (e) => {
+      try {
+        e.stopPropagation()
+        await tools.sendMessage(ws, ID, message.value, name)
+        message.value = null
+        btn.disabled = true
+      } catch (e) {
+        console.log(e)
+      }
+    })
+    message.oninput = e => {
+      if(e.target.value == null || e.target.value.trim() == "") {
+        btn.disabled = true;
+      } else {
+        btn.disabled = false
+      }
+    }
+  })
+  ws.addEventListener("message" ,async ({ data }) => {
+    try {
+      data = await tools.covertData(data)
+      await tools.newMessage(data, ID, ".chat-body")
+      tools.getName(data.name, ".header-name")
+    } catch (e) {
+      console.log(e)
+    }
+  })
+  ws.onerror = e => console.log(e)
+  ws.onclose = e => localStorage.clear()
+})(document.querySelector.bind(document),new WebSocket(`wss://${window.location.host}`))

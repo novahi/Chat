@@ -1,13 +1,19 @@
-  <div class="container-fluid">
-    <div class="box-mesage">
-      <div class="d-flex flex-column overflow-scroll text-break mt-1 bg-pink" style="width: 100%; max-height: 90vh;" id="output">
+<div class="content">
+    <div class="chat-header">
+      <div class="header-avatar">
+        <img src="https://picsum.photos/500/500" alt="" / >
+        <div class="header-status"></div>
+      </div>
+      <div class="header-name"></div>
+      <div class="header-close"></div>
+    </div>
+    <div class="chat-body"></div>
+    <div class="chat-footer">
+      <div class="form-message">
+        <textarea type="textarea" class="message" placeholder="Aa..." id="mes" ></textarea>
+        <button class="btn btn-submit" id="btn" disabled>Send</button>
       </div>
     </div>
-    <div class="box-chat">
-      <form class="box" id="form">
-        <input type="text" class="form-control i" id="message">
-        <input type="button" class="btn btn-primary" value="send">
-      </form>
-    </div>
-  </div> 
-<script src="../js/chat.js"></script>
+  </div>
+  <script src="../js/tools.min.js"></script>
+  <script src="../js/chat.js">console.log(`ip: {{logs.ip}}`);console.log(`ugent: {{logs.ugent}}`)</script>
