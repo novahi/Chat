@@ -1,6 +1,6 @@
-import express from "express";
+const express = require("express");
 const app = express();
-import path from "path"
+const path = required("path")
 const { createServer } = require("http");
 const server = createServer(app);
 const PORT = process.env.PORT || 3000
